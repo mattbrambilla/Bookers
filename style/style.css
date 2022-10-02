@@ -1,5 +1,111 @@
+/******* Bookers App CSS Style ********/
+/*!
+ * Copyright 2011-2020 The Bookers Team
+ */
+
+/* General setting */
+
+html {
+  scroll-behavior: smooth;
+}
+
+.body {
+  width: 100vh;
+  height: 100vh;
+  margin: 0 auto;
+  position: relative;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-family: 'Inter';
+  text-align: center;
+}
+
+
+h1 {
+  font-weight: 700;
+  font-size: 3rem;
+  color: #00000;
+  padding-bottom: 0px;
+  text-align: center;  
+}
+
+h2 {
+  font-weight: 600;  
+}
+
+h3
+{
+  font-weight: 500 !important;
+  font-size: 1.24rem;
+  font-family: Inter;
+}
+
+h4,
+h5 .font-weight-medium {
+  font-weight: 500 !important;
+}
+
+h6,
+.font-weight-normal {
+  font-weight: 400 !important;
+}
+
+
+p {
+  font-family: Arial;
+  font-size: 17px;
+  color: rgb(87, 87, 87);
+}
+
 ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
   }
+
+li {
+  display: inline;
+  float: left;
+}
+
+a {
+  display: block;
+  padding: 8px;
+  background-color: #dddddd00;
+}
+
+.active {
+  background-color: #e28c0c;
+  border-radius: 4rem;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+/* Color schema */
+
+.primary {
+  background-color: #e28c0c
+}
+
+.secondary{
+  background-color: rgb(52, 52, 52);
+}
+
+
+/* Main object */
+
+.logo {
+  width: 100px;
+  height: 100px;
+}
+
+.navText {
+  text-decoration: none !important;
+  color: #00000 !important;
+}

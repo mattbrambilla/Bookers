@@ -117,3 +117,11 @@ header {
   background-color: orange;
   border-radius: 30px;
 }
+
+.searchBar {
+  width: 40rem;
+  border-radius: 100px;
+  border-color: rgb(120, 120, 120);
+  position: fixed;
+  margin-left: 28%;
+}

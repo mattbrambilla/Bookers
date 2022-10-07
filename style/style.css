@@ -105,6 +105,7 @@ header {
   width: 100px;
   height: 100px;
   margin-left: 1rem;
+  z-index: 1;
 }
 
 .navText {

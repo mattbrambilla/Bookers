@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/x-icon" href="img/bookicon.ico">
     <link rel="stylesheet" href="./style/style.css">
+    <link rel="stylesheet" href="./style/bulma.css">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
     <title>Bookers - all info about books</title>
-    <icon</icon>
+    <icon< /icon>
 </head>
+
 <body>
-    <header>
+    <!-- <header>
 
      <img class="logo"  type="svg" src="img/bookicon.svg">
      <h1>Bookers</h1>
@@ -24,10 +28,81 @@
         <li><a href="about.asp">About</a></li>
     </ul>
     </nav>
-    </header>
+    </header> -->
 
-    <h2>Search</h2>
-    <input type="text" class="searchBar" placeholder="Search by title, category or author..."></input>
-    
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="">
+                <img src="./img/bookicon.svg" width="30"">
+            <h1>Bookers</h1>
+          </a>
+      
+          <a role=" button" class="navbar-burger" aria-label="menu" aria-expanded="false"
+                    data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item">
+                    Home
+                </a>
+
+                <a class="navbar-item">
+                    Info
+                </a>
+
+                <a class="navbar-item">
+                    Contact
+                </a>
+
+            </div>
+        </div>
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <a class="button is-primary">
+                        <strong>Help</strong>
+                    </a>
+                </div>
+            </div>
+        </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="field">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <label class="label is-large text-center">Search</label>
+            <div class="control has-icons-left has-icons-right">
+                <input class="input is-medium is-rounded" type="email"
+                    placeholder="Search by category, author or title">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-envelope fa-xs"></i>
+                </span>
+                <span class="icon is-small is-right">
+                    <i class="fas fa-check fa-xs"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <footer class="footer">
+        <div class="content has-text-centered">
+            <p>
+                <strong>Bookers</strong> by <a href="https://jgthms.com">Mattia Brambilla</a>. The source code is
+                licensed
+                <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
+                is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.
+            </p>
+        </div>
+    </footer>
+
 </body>
+
 </html>

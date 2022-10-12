@@ -120,3 +120,8 @@ header {
   position: relative;
   margin-left: 28%;
 }
+
+.homeSection {
+  margin-top: 25vh;
+  padding-bottom:25vh;
+}

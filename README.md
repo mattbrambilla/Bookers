@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/mattbrambilla/Bookers/blob/main/README.md">
-    <img src="img/favicon.ico" alt="Logo" width="80" height="80">
+    <img src="img/bookicon.ico" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Bookers</h3>

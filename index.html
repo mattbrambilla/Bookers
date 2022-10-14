@@ -8,7 +8,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="img/bookicon.ico">
     <link rel="stylesheet" href="./style/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <script src="./js/infobox.js"></script>
     <title>Bookers - all info about books</title>
     <icon< /icon>
 </head>
@@ -23,21 +23,17 @@
           </a>
       
           <a role=" button" class="navbar-burger" aria-label="menu" aria-expanded="false"
-                    data-target="navbarBasicExample">
+                    data-target="navbarBookers">
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
             </a>
         </div>
 
-        <div id="navbarBasicExample" class="navbar-menu">
+        <div id="navbarBookers" class="navbar-menu">
             <div class="navbar-start">
                 <a class="navbar-item">
                     Home
-                </a>
-
-                <a class="navbar-item">
-                    Info
                 </a>
 
                 <a class="navbar-item">
@@ -49,9 +45,9 @@
         <div class="navbar-end">
             <div class="navbar-item">
                 <div class="buttons">
-                    <a class="button is-info">
+                    <button class="button is-info js-modal-trigger" data-target="modal">
                         <strong>Help</strong>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
@@ -82,7 +78,7 @@
 
 
     <!-- Infobox for Booker -->
-    <section>
+    <!-- <section>
         <div class="container">
             <article class="message is-info">
                 <div class="message-header">
@@ -98,8 +94,28 @@
                 </div>
             </article>
         </div>
-    </section>
+    </section> -->
     <!-- End on infobox -->
+
+
+    <div class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Informtion</p>
+            <button class="delete" aria-label="close"></button>
+          </header>
+          <section class="modal-card-body">
+            <p>Hello world</p>
+            <!-- Content ... -->
+          </section>
+          <footer class="modal-card-foot">
+            <button class="button is-success">Save changes</button>
+            <button class="button">Cancel</button>
+          </footer>
+        </div>
+      </div>
+
 
     <!-- Footer -->
     <footer class="footer">

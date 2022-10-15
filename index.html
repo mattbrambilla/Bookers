@@ -13,54 +13,37 @@
     <icon< /icon>
 </head>
 
-<body>
+<header>
     <!-- Navbar -->
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
             <a class="navbar-item" href="">
-                <img src="./img/bookicon.svg" width="30"">
+                <img src="./img/bookicon.svg" width="30">
             <h1>Bookers</h1>
           </a>
-      
-          <a role=" button" class="navbar-burger" aria-label="menu" aria-expanded="false"
-                    data-target="navbarBookers">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
         </div>
-
-        <div id="navbarBookers" class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item">
-                    Home
-                </a>
-
-                <a class="navbar-item">
-                    Contact
-                </a>
-            </div>
-        </div>
-
-        <div class="navbar-end">
+          <div class="navbar-end">
             <div class="navbar-item">
                 <div class="buttons">
-                    <button class="button is-info js-modal-trigger" data-target="modal" onclick = modal >
+                    <button class="button is-info js-modal-trigger" data-target="modal">
                         <strong>Help</strong>
                     </button>
                 </div>
             </div>
-        </div>
+        </div>    
         </div>
     </nav>
+</header>
     <!-- Fine Navbar -->
+
+    <body background="./img/pattern.jpg" class="pattern">
 
     <!-- Search area -->
     <section class="homeSection">
     <div class="container">
         <div class="field">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <label class="label is-large text-center">Search</label>
+            <label class="label is-large has-text-centered">Search</label>
             <div class="control has-icons-left has-icons-right">
                 <input class="input is-medium is-rounded" type="email"
                     placeholder="Search by category, author or title">
@@ -93,6 +76,7 @@
           </footer>
         </div>
       </div>
+    </body>
 
 
     <!-- Footer -->
@@ -103,7 +87,5 @@
             </p>
         </div>
     </footer>
-
-</body>
 
 </html>

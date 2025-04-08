@@ -6,55 +6,70 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" type="image/x-icon" href="img/bookicon.ico">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
   <link rel="stylesheet" href="./style/style.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <script src="./js/infobox.js"></script>
-  <title>Bookers - all info about books</title>
   <script src="./js/search.js" defer></script>
+  <title>Bookers - All Info About Books</title>
 </head>
 
 <header>
-  <!-- Navbar -->
-  <nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-      <a class="navbar-item" href="">
-        <img src="./img/bookicon.svg" width="30" alt="Bookers Logo">
-        <h1>Bookers</h1>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="./img/bookicon.svg" alt="Bookers Logo" width="30" class="me-2">
+        <h1 class="h5 mb-0">Bookers</h1>
       </a>
-    </div>
-    <div class="navbar-end">
-      <div class="navbar-item">
-        <div class="buttons">
-          <button class="button is-info js-modal-trigger" data-target="modal">
-            <strong>Help</strong>
-          </button>
-        </div>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <button class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#helpModal">
+              <strong>Help</strong>
+            </button>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>
 </header>
 
 <!-- Search area -->
-<section class="homeSection">
-  <div class="container">
-    <div class="field">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <h1 class="openingTitle">Bookers</h1>
-      <h2>Where all book lovers search info</h2>
-      <br>
-      <div class="control has-icons-left has-icons-right">
-        <input id="searchInput" class="input is-medium is-rounded" type="text" placeholder="Search by category, author or title">
-        <span class="icon is-small is-left">
-          <i class="fas fa-envelope fa-xs"></i>
-        </span>
-        <span class="icon is-small is-right">
-          <i class="fas fa-check fa-xs"></i>
-        </span>
+<section class="homeSection py-5 bg-light">
+  <div class="container text-center">
+    <h1 class="display-4 mb-3">Bookers</h1>
+    <h2 class="lead mb-4">Where all book lovers search info</h2>
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="input-group input-group-lg">
+          <input id="searchInput" type="text" class="form-control rounded-start" placeholder="Search by category, author or title">
+          <button id="searchButton" class="btn btn-info text-white rounded-end">Search</button>
+        </div>
       </div>
-      <button id="searchButton" class="button is-info mt-3">Search</button>
     </div>
     <div id="results" class="mt-5">
       <!-- Search results will be displayed here -->
     </div>
   </div>
+
+  <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="helpModalLabel">Help</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Enter a book title, author, or genre in the search bar to find information about your favorite books.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </section>

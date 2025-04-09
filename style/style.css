@@ -117,3 +117,53 @@ header {
   object-fit: cover; /* Mantieni le proporzioni dell'immagine */
   margin: 0 auto; /* Centra l'immagine */
 }
+
+/* Stile base per le card */
+.card {
+  border: none;
+  border-radius: 10px; /* Angoli arrotondati per simulare un libro */
+  overflow: hidden; /* Nascondi contenuto che esce dai bordi */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombra leggera */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transizione per l'effetto hover */
+}
+
+/* Effetto hover per sollevare la card */
+.card:hover {
+  transform: translateY(-10px); /* Solleva la card */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Ombra più pronunciata */
+}
+
+/* Stile per l'immagine della copertina */
+.card-img-top {
+  border-bottom: 2px solid #ddd; /* Linea sottile per separare l'immagine dal contenuto */
+  max-height: 300px; /* Limita l'altezza dell'immagine */
+  object-fit: cover; /* Adatta l'immagine senza deformarla */
+}
+
+/* Stile per il corpo della card */
+.card-body {
+  background: linear-gradient(135deg, #fdfbfb, #ebedee); /* Sfondo sfumato per simulare la pagina di un libro */
+  padding: 15px;
+}
+
+/* Stile per il titolo */
+.card-title {
+  font-family: 'Georgia', serif; /* Font elegante per il titolo */
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+}
+
+/* Stile per l'autore */
+.card-text {
+  font-size: 0.9rem;
+  color: #555;
+  text-align: center;
+}
+
+/* Stile per l'effetto hover */
+.card:hover .card-img-top {
+  transform: scale(1.05); /* Leggero zoom sull'immagine */
+  transition: transform 0.3s ease; /* Transizione fluida */
+}

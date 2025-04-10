@@ -98,11 +98,12 @@ function updatePagination() {
 
   for (let i = 1; i <= totalPages; i++) {
     const pageButton = document.createElement('button');
-    pageButton.classList.add('btn', 'btn-outline-info', 'mx-1');
+    pageButton.classList.add('btn', 'mx-1'); // Rimuoviamo 'btn-outline-info'
+    pageButton.classList.add('pagination-button'); // Aggiungiamo una classe personalizzata
     pageButton.textContent = i;
 
     if (i === currentPage) {
-      pageButton.classList.add('active');
+      pageButton.classList.add('active'); // Aggiungiamo la classe 'active' per il pulsante corrente
     }
 
     pageButton.addEventListener('click', () => {
@@ -115,7 +116,6 @@ function updatePagination() {
 
   resultsContainer.parentElement.appendChild(paginationContainer); // Aggiungi la barra di navigazione sotto i risultati
 }
-
 // Ascolta l'evento "input" per la ricerca in tempo reale
 searchInput.addEventListener('input', () => {
   const query = searchInput.value.trim();

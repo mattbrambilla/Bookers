@@ -111,25 +111,27 @@ body {
 }
 
 .pagination-container button {
-  background-color: var(--primary-color);
-  color: var(--background-color);
+  background-color: var(--primary-color); /* Marrone scuro */
+  color: var(--background-color); /* Crema */
   border: none;
   padding: 8px 12px;
   margin: 0 5px;
   border-radius: 5px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .pagination-container button:hover {
-  background-color: var(--hover-color);
-  color: var(--background-color);
+  background-color: var(--hover-color); /* Marrone rossiccio */
+  color: var(--background-color); /* Crema */
+  transform: translateY(-2px); /* Effetto sollevamento */
 }
 
 .pagination-container button.active {
-  background-color: var(--accent-color);
-  color: var(--background-color);
+  background-color: var(--accent-color); /* Sabbia */
+  color: var(--background-color); /* Crema */
+  font-weight: bold;
+  border: 1px solid var(--primary-color); /* Bordo marrone scuro */
 }
-
 /* Modal */
 .modal-content {
   background-color: var(--secondary-color);

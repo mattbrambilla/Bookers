@@ -1,11 +1,12 @@
 /* Palette colori libreria */
 :root {
-  --primary-color: #8B4513; /* Marrone scuro */
-  --secondary-color: #D2B48C; /* Marrone chiaro (tan) */
-  --accent-color: #F4A460; /* Sabbia */
-  --background-color: #FAF3E0; /* Crema */
+  --primary-color: #6F4E37; /* Marrone caffè */
+  --secondary-color: #C19A6B; /* Marrone chiaro/beige */
+  --accent-color: #D8B384; /* Sabbia chiara */
+  --background-color: #F5F5DC; /* Beige (sfondo generale) */
   --text-color: #4B2E2E; /* Testo marrone scuro */
-  --hover-color: #A0522D; /* Marrone rossiccio per hover */
+  --hover-color: #8B5E3C; /* Marrone rossiccio per hover */
+  --border-color: #A67B5B; /* Marrone medio per bordi */
 }
 
 /* Sfondo generale */
@@ -17,15 +18,16 @@ body {
 /* Navbar */
 .navbar {
   background-color: var(--primary-color) !important;
+  border-bottom: 2px solid var(--border-color); /* Linea decorativa */
 }
 
 .navbar-brand h1 {
-  color: white;
-  font-family: 'Arial', serif;
+  color: var(--background-color);
+  font-family: 'Georgia', serif;
 }
 
 .nav-link {
-  color: white !important;
+  color: var(--background-color) !important;
   transition: color 0.3s ease;
 }
 
@@ -36,34 +38,46 @@ body {
 /* Barra di ricerca */
 .input-group input {
   background-color: var(--secondary-color);
-  border-radius: 10px 10px 10px 10px;
+  border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: var(--text-color);
 }
 
 .input-group input:focus {
   border-color: var(--primary-color);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 0 0 3px rgba(244, 164, 96, 0.3);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 0 0 3px rgba(216, 179, 132, 0.3);
 }
 
 .input-group input::placeholder {
   color: var(--text-color);
-  opacity: 0.5;
+  opacity: 0.6;
+}
+
+.input-group .btn {
+  background-color: var(--accent-color);
+  border: none;
+  color: var(--background-color);
+}
+
+.input-group .btn:hover {
+  background-color: var(--hover-color);
+  color: var(--background-color);
 }
 
 /* Risultati di ricerca */
 .book-card {
-  background-color: white;
+  background-color: var(--secondary-color);
   border-radius: 0.5rem;
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
 }
 
 .book-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-  border-color: var(--accent-color);
+  border-color: var(--hover-color);
 }
 
 .book-card img {
@@ -95,7 +109,7 @@ body {
 
 .book-card .btn {
   background-color: var(--primary-color);
-  color: white;
+  color: var(--background-color);
   transition: background-color 0.3s ease;
 }
 
@@ -111,28 +125,28 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 0.375rem;
-  border: 1px solid #e5e7eb;
-  background-color: white;
+  border: 1px solid var(--border-color);
+  background-color: var(--secondary-color);
   color: var(--text-color);
   transition: all 0.3s ease;
 }
 
 .pagination-btn:hover {
-  background-color: var(--secondary-color);
-  color: var(--primary-color);
+  background-color: var(--hover-color);
+  color: var(--background-color);
   border-color: var(--hover-color);
 }
 
 .pagination-btn.active {
   background-color: var(--primary-color);
-  color: white;
+  color: var(--background-color);
   border-color: var(--primary-color);
 }
 
 /* Footer */
 footer {
   background-color: var(--primary-color);
-  color: white;
+  color: var(--background-color);
 }
 
 footer a {
@@ -146,13 +160,14 @@ footer a:hover {
 
 footer .btn {
   background-color: var(--accent-color);
-  color: white;
+  color: var(--background-color);
   transition: background-color 0.3s ease;
 }
 
 footer .btn:hover {
   background-color: var(--hover-color);
 }
+
 
 /* Media queries per responsività */
 @media (max-width: 768px) {
@@ -182,3 +197,28 @@ footer .btn:hover {
 .d-flex { display: flex; }
 .justify-content-center { justify-content: center; }
 .text-muted { color: var(--text-color); opacity: 0.7; }
+
+/* Modal */
+#bookModal {
+  animation: fadeIn 0.3s ease-out;
+}
+
+#bookModal .bg-secondary {
+  background-color: var(--secondary-color);
+}
+
+#bookModal .text-primary {
+  color: var(--primary-color);
+}
+
+#bookModal .text-text {
+  color: var(--text-color);
+}
+
+#bookModal .bg-primary {
+  background-color: var(--primary-color);
+}
+
+#bookModal .hover\\:bg-hover:hover {
+  background-color: var(--hover-color);
+}

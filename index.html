@@ -1,78 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" type="image/x-icon" href="img/bookicon.ico">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
-  <link rel="stylesheet" href="./style/style.css">
-  <script src="./js/infobox.js"></script>
-  <script src="./js/search.js" defer></script>
-  <title>Bookers - All Info About Books</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="img/bookicon.ico">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- CSS personalizzato -->
+    <link rel="stylesheet" href="./style/style.css">
+    <!-- Script JS -->
+    <script src="./js/infobox.js" defer></script>
+    <script src="./js/search.js" defer></script>
+    <script src="./js/modal.js" defer></script>
+    <title>Bookers - All Info About Books</title>
 </head>
+<body class="bg-background text-text min-h-screen flex flex-col">
+    <!-- Header -->
+    <header>
+        <nav class="navbar bg-primary shadow-md">
+            <div class="container mx-auto flex items-center justify-between py-4 px-6">
+                <a class="flex items-center gap-2 text-background" href="#">
+                    <img src="./img/bookicon.svg" alt="Bookers Logo" width="30">
+                    <h1 class="text-lg font-bold">Bookers</h1>
+                </a>
+                <button class="navbar-toggler text-background md:hidden" type="button">
+                    <span class="material-icons">menu</span>
+                </button>
+                <div class="hidden md:flex space-x-6">
+                    <a class="nav-link text-background hover:text-accent transition-colors" href="#">Home</a>
+                    <a class="nav-link text-background hover:text-accent transition-colors" href="#">Categories</a>
+                    <a class="nav-link text-background hover:text-accent transition-colors" href="#">New Releases</a>
+                    <a class="nav-link text-background hover:text-accent transition-colors" href="#">Popular</a>
+                </div>
+            </div>
+        </nav>
+    </header>
 
-<header>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand d-flex align-items-center" href="#">
-        <img src="./img/bookicon.svg" alt="Bookers Logo" width="30" class="me-2">
-        <h1 class="h5 mb-0">Bookers</h1>
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <button class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#helpModal">
-              <strong>Help</strong>
-            </button>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-</header>
+    <!-- Main -->
+    <main class="flex-grow">
+        <div class="container mx-auto px-4 py-8">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-primary mb-4">Bookers</h1>
+                <p class="text-lg text-text mb-8">Where all book lovers search info</p>
 
-<body>
+                <!-- Barra di ricerca -->
+                <div class="max-w-3xl mx-auto">
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            id="searchInput"
+                            placeholder="Search by category, author or title" 
+                            class="w-full py-4 px-12 rounded-full border-2 border-secondary focus:border-primary focus:ring-2 focus:ring-accent/30 shadow-lg text-text placeholder-text/50 transition-all duration-300 focus:outline-none"
+                        >
+                        <div class="absolute left-4 top-1/2 transform -translate-y-1/2 text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<!-- Search area -->
-<section class="homeSection py-5">
-  <div class="container text-center">
-    <h1 class="display-4 mb-3">Bookers</h1>
-    <h2 class="lead mb-4">Where all book lovers search info</h2>
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="input-group input-group-lg">
-          <input id="searchInput" type="text" class="form-control rounded" placeholder="Search by category, author or title">
+            <!-- Contenitore risultati -->
+            <div id="results" class="mt-8 text-center text-muted">
+                <p class="text-text/70">Start typing to search for books...</p>
+            </div>
+
+            <!-- Contenitore paginazione -->
+            <div id="pagination" class="mt-8 flex justify-center"></div>
         </div>
-      </div>
-    </div>
-    <div id="results" class="mt-5">
-      <!-- Search results will be displayed here -->
-    </div>
-  </div>
+    </main>
 
-  <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="helpModalLabel">Help</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Footer -->
+    <footer class="bg-primary text-background py-8 mt-auto">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Bookers</h3>
+                    <p>Your source for information on all books. Easily find details about authors, titles, and categories.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Useful Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-accent transition-colors">Home</a></li>
+                        <li><a href="#" class="hover:text-accent transition-colors">Categories</a></li>
+                        <li><a href="#" class="hover:text-accent transition-colors">New Releases</a></li>
+                        <li><a href="#" class="hover:text-accent transition-colors">Popular</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contact</h3>
+                    <p>For any information or support, don't hesitate to contact us.</p>
+                    <button class="mt-4 bg-accent hover:bg-hover text-background py-2 px-4 rounded transition-colors">
+                        Contact Us
+                    </button>
+                </div>
+            </div>
+            <div class="border-t border-background/20 mt-8 pt-6 text-center">
+                <p>&copy; 2025 Bookers. All rights reserved.</p>
+            </div>
         </div>
-        <div class="modal-body">
-          Enter a book title, author, or genre in the search bar to find information about your favorite books.
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</section>
+    </footer>
 </body>
 </html>

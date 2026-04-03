@@ -8,7 +8,7 @@
   </a>
 
   <h3 align="center">Bookers</h3>
-  <p>a web application to stay in touch with books news</p>
+  <p>A book search engine</p>
 
   <p align="center">
     Bookers

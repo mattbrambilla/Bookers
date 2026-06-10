@@ -10,33 +10,51 @@ const paginationContainer = document.getElementById('pagination');
 let currentPage = 1;
 let resultsPerPage = 10;
 let allResults = [];
+let currentController = null;
+let lastQuery = '';
+
+function debounce(fn, delay) {
+    let timer;
+    return function (...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn.apply(this, args), delay);
+    };
+}
 
 // Funzione per cercare libri
 function searchBooks(query) {
+    if (currentController) {
+        currentController.abort();
+    }
+    currentController = new AbortController();
+    const signal = currentController.signal;
+
     if (!query) {
         resultsContainer.innerHTML = '<p class="text-center text-text/70">Start typing to search for books...</p>';
         paginationContainer.innerHTML = '';
         return;
     }
-    
-    resultsContainer.innerHTML = '<p class="text-center text-text/70"><span class="loading">Loading...</span></p>';
+
+    lastQuery = query;
+
+    resultsContainer.innerHTML = '<div class="flex justify-center items-center py-12"><svg class="animate-spin h-10 w-10 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg></div>';
     paginationContainer.innerHTML = '';
-    
-    // OpenLibrary API endpoint
+
     const apiUrl = `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}`;
-    
-    fetch(apiUrl)
+
+    fetch(apiUrl, { signal })
         .then(response => response.json())
         .then(data => {
             if (data.docs && data.docs.length > 0) {
                 allResults = data.docs;
                 displayResults(allResults, 1);
             } else {
-                resultsContainer.innerHTML = '<p class="text-center text-text/70">No books found. Try a different search term.</p>';
+                resultsContainer.innerHTML = `<p class="text-center text-text/70">No books found for "<strong>${query}</strong>". Try different keywords.</p>`;
                 paginationContainer.innerHTML = '';
             }
         })
         .catch(error => {
+            if (error.name === 'AbortError') return;
             console.error('Error fetching data:', error);
             resultsContainer.innerHTML = '<p class="text-center text-text/70">An error occurred while searching. Please try again later.</p>';
             paginationContainer.innerHTML = '';
@@ -49,11 +67,19 @@ function createBookCard(book) {
     card.className = 'book-card bg-secondary rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-border-color flex flex-col';
 
     // Immagine copertina
-    const img = document.createElement('img');
-    img.src = book.cover_i ? `https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg` : './img/no-cover.png';
-    img.alt = book.title || 'Book Cover';
-    img.className = 'w-full h-48 object-cover';
-    card.appendChild(img);
+    const imgContainer = document.createElement('div');
+    imgContainer.className = 'w-full h-48 flex items-center justify-center bg-gray-100';
+
+    if (book.cover_i) {
+        const img = document.createElement('img');
+        img.src = `https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg`;
+        img.alt = book.title || 'Book Cover';
+        img.className = 'w-full h-full object-cover';
+        imgContainer.appendChild(img);
+    } else {
+        imgContainer.innerHTML = '<svg class="w-16 h-16 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>';
+    }
+    card.appendChild(imgContainer);
 
     // Contenuto della card
     const content = document.createElement('div');
@@ -146,7 +172,12 @@ function displayResults(books, page) {
         resultsContainer.innerHTML = '<p class="text-center text-text/70">No books found. Try a different search term.</p>';
         return;
     }
-    
+
+    const countMsg = document.createElement('p');
+    countMsg.className = 'text-text/70 mb-6 text-center';
+    countMsg.textContent = `${books.length} result${books.length !== 1 ? 's' : ''} found${lastQuery ? ` for "${lastQuery}"` : ''}`;
+    resultsContainer.appendChild(countMsg);
+
     // Crea un contenitore a griglia per i risultati
     const grid = document.createElement('div');
     grid.className = 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6';
@@ -210,17 +241,17 @@ function createBookModal(book) {
     
     const imgContainer = document.createElement('div');
     imgContainer.className = 'rounded-lg overflow-hidden shadow-lg bg-gray-100';
-    
-    const img = document.createElement('img');
+
     if (book.cover_i) {
+        const img = document.createElement('img');
         img.src = `https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg`;
+        img.alt = book.title || 'Book Cover';
+        img.className = 'w-full h-auto object-cover';
+        imgContainer.appendChild(img);
     } else {
-        img.src = 'img/no-cover.png'; // Immagine placeholder
+        imgContainer.className = 'rounded-lg overflow-hidden shadow-lg bg-gray-100 flex items-center justify-center p-12';
+        imgContainer.innerHTML = '<svg class="w-24 h-24 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>';
     }
-    img.alt = book.title || 'Book Cover';
-    img.className = 'w-full h-auto object-cover';
-    
-    imgContainer.appendChild(img);
     leftColumn.appendChild(imgContainer);
     
     // Colonna destra (informazioni)
@@ -332,11 +363,16 @@ function showBookDetails(book) {
     });
 }
 
-// Event listener per la ricerca
-searchInput.addEventListener('input', function() {
+// Event listener per la ricerca con debounce
+searchInput.addEventListener('input', debounce(function() {
     const query = this.value.trim();
+    if (query.length < 2) {
+        resultsContainer.innerHTML = '<p class="text-center text-text/70">Start typing to search for books...</p>';
+        paginationContainer.innerHTML = '';
+        return;
+    }
     searchBooks(query);
-});
+}, 300));
 
 // Aggiungi animazione per il modal
 document.head.insertAdjacentHTML('beforeend', `
@@ -348,15 +384,12 @@ document.head.insertAdjacentHTML('beforeend', `
 .animate-fadeIn {
     animation: fadeIn 0.3s ease-out forwards;
 }
-.loading:after {
-    content: '...';
-    animation: dots 1.5s steps(5, end) infinite;
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
-@keyframes dots {
-    0%, 20% { content: '.'; }
-    40% { content: '..'; }
-    60% { content: '...'; }
-    80%, 100% { content: ''; }
+.animate-spin {
+    animation: spin 1s linear infinite;
 }
 </style>
 `);

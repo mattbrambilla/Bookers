@@ -5,6 +5,10 @@
 const searchInput = document.getElementById('searchInput');
 const resultsContainer = document.getElementById('results');
 const paginationContainer = document.getElementById('pagination');
+const navbarSearchSlot = document.getElementById('navbarSearchSlot');
+const heroSearchSlot = document.getElementById('heroSearchSlot');
+const heroSection = document.getElementById('heroSection');
+const searchWrapper = document.getElementById('searchWrapper');
 
 // Variabili globali per la paginazione
 let currentPage = 1;
@@ -21,6 +25,44 @@ function debounce(fn, delay) {
     };
 }
 
+// Sposta la barra di ricerca nella navbar
+function moveSearchToNavbar() {
+    if (navbarSearchSlot && searchWrapper && searchWrapper.parentElement !== navbarSearchSlot) {
+        navbarSearchSlot.classList.remove('hidden');
+        navbarSearchSlot.appendChild(searchWrapper);
+        searchWrapper.classList.add('search-in-navbar');
+        heroSection?.classList.add('hero-hidden');
+    }
+}
+
+// Riporta la barra di ricerca nell'hero
+function moveSearchToHero() {
+    if (heroSearchSlot && searchWrapper && searchWrapper.parentElement !== heroSearchSlot) {
+        heroSearchSlot.appendChild(searchWrapper);
+        searchWrapper.classList.remove('search-in-navbar');
+        navbarSearchSlot?.classList.add('hidden');
+        heroSection?.classList.remove('hero-hidden');
+    }
+}
+
+// Genera scheletri per il caricamento
+function createSkeletonCards(count) {
+    let cards = '';
+    for (let i = 0; i < count; i++) {
+        cards += `
+            <div class="skeleton-card">
+                <div class="skeleton-image skeleton-shimmer"></div>
+                <div class="p-4 flex flex-col">
+                    <div class="skeleton-line skeleton-shimmer"></div>
+                    <div class="skeleton-line short skeleton-shimmer"></div>
+                    <div class="skeleton-line medium skeleton-shimmer"></div>
+                    <div class="skeleton-button skeleton-shimmer"></div>
+                </div>
+            </div>`;
+    }
+    return `<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">${cards}</div>`;
+}
+
 // Funzione per cercare libri
 function searchBooks(query) {
     if (currentController) {
@@ -30,14 +72,16 @@ function searchBooks(query) {
     const signal = currentController.signal;
 
     if (!query) {
+        moveSearchToHero();
         resultsContainer.innerHTML = '<p class="text-center text-text/70">Start typing to search for books...</p>';
         paginationContainer.innerHTML = '';
         return;
     }
 
+    moveSearchToNavbar();
     lastQuery = query;
 
-    resultsContainer.innerHTML = '<div class="flex justify-center items-center py-12"><svg class="animate-spin h-10 w-10 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg></div>';
+    resultsContainer.innerHTML = createSkeletonCards(6);
     paginationContainer.innerHTML = '';
 
     const apiUrl = `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}`;
@@ -62,13 +106,14 @@ function searchBooks(query) {
 }
 
 // Funzione per creare una card libro con Tailwind CSS
-function createBookCard(book) {
+function createBookCard(book, index = 0) {
     const card = document.createElement('div');
-    card.className = 'book-card bg-secondary rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-border-color flex flex-col';
+    card.className = 'bg-surface rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-border flex flex-col animate-fadeInUp';
+    card.style.animationDelay = `${index * 0.08}s`;
 
     // Immagine copertina
     const imgContainer = document.createElement('div');
-    imgContainer.className = 'w-full h-48 flex items-center justify-center bg-gray-100';
+    imgContainer.className = 'w-full h-48 flex items-center justify-center bg-surface';
 
     if (book.cover_i) {
         const img = document.createElement('img');
@@ -77,7 +122,7 @@ function createBookCard(book) {
         img.className = 'w-full h-full object-cover';
         imgContainer.appendChild(img);
     } else {
-        imgContainer.innerHTML = '<svg class="w-16 h-16 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>';
+        imgContainer.innerHTML = '<svg class="w-16 h-16 text-text-muted" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>';
     }
     card.appendChild(imgContainer);
 
@@ -99,7 +144,7 @@ function createBookCard(book) {
 
     // Pulsante dettagli
     const detailsButton = document.createElement('button');
-    detailsButton.className = 'mt-auto bg-primary hover:bg-hover text-background py-2 px-4 rounded transition-colors';
+    detailsButton.className = 'mt-auto bg-primary hover:bg-primary-hover text-background py-2 px-4 rounded transition-colors';
     detailsButton.textContent = 'View Details';
     detailsButton.onclick = () => showBookDetails(book);
     content.appendChild(detailsButton);
@@ -115,7 +160,7 @@ function createPaginationButtons(currentPage, totalPages) {
     
     // Pulsante precedente
     const prevButton = document.createElement('button');
-    prevButton.className = 'w-10 h-10 flex items-center justify-center rounded-md border border-gray-300 bg-white text-text/70 hover:bg-secondary/30 hover:text-primary hover:border-hover transition-colors';
+    prevButton.className = 'w-10 h-10 flex items-center justify-center rounded-md border border-border bg-white text-text/70 hover:bg-surface hover:text-primary hover:border-primary transition-colors';
     prevButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>';
     prevButton.disabled = currentPage === 1;
     prevButton.style.opacity = currentPage === 1 ? '0.5' : '1';
@@ -140,7 +185,7 @@ function createPaginationButtons(currentPage, totalPages) {
         if (i === currentPage) {
             pageButton.className = 'w-10 h-10 flex items-center justify-center rounded-md border border-primary bg-primary text-white font-medium';
         } else {
-            pageButton.className = 'w-10 h-10 flex items-center justify-center rounded-md border border-gray-300 bg-white text-text hover:bg-secondary/30 hover:text-primary hover:border-hover transition-colors';
+            pageButton.className = 'w-10 h-10 flex items-center justify-center rounded-md border border-border bg-white text-text hover:bg-surface hover:text-primary hover:border-primary transition-colors';
         }
         pageButton.textContent = i;
         pageButton.onclick = function() {
@@ -151,7 +196,7 @@ function createPaginationButtons(currentPage, totalPages) {
     
     // Pulsante successivo
     const nextButton = document.createElement('button');
-    nextButton.className = 'w-10 h-10 flex items-center justify-center rounded-md border border-gray-300 bg-white text-text/70 hover:bg-secondary/30 hover:text-primary hover:border-hover transition-colors';
+    nextButton.className = 'w-10 h-10 flex items-center justify-center rounded-md border border-border bg-white text-text/70 hover:bg-surface hover:text-primary hover:border-primary transition-colors';
     nextButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" /></svg>';
     nextButton.disabled = currentPage === totalPages;
     nextButton.style.opacity = currentPage === totalPages ? '0.5' : '1';
@@ -189,7 +234,7 @@ function displayResults(books, page) {
     // Aggiungi le card dei libri alla griglia
     for (let i = startIndex; i < endIndex; i++) {
         const book = books[i];
-        const card = createBookCard(book);
+        const card = createBookCard(book, i - startIndex);
         grid.appendChild(card);
     }
     
@@ -216,16 +261,16 @@ function goToPage(page) {
 function createBookModal(book) {
     // Crea il container del modal
     const modal = document.createElement('div');
-    modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+    modal.className = 'fixed inset-0 bg-black bg-opacity-50 modal-backdrop flex items-center justify-center z-50 p-4';
     modal.id = 'bookModal';
     
     // Crea il contenuto del modal
     const modalContent = document.createElement('div');
-    modalContent.className = 'bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative animate-fadeIn';
+    modalContent.className = 'bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative animate-scaleIn';
     
     // Pulsante di chiusura
     const closeButton = document.createElement('button');
-    closeButton.className = 'absolute top-4 right-4 text-gray-500 hover:text-primary transition-colors';
+    closeButton.className = 'absolute top-4 right-4 text-text-muted hover:text-primary transition-colors';
     closeButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>';
     closeButton.onclick = function() {
         document.body.removeChild(modal);
@@ -240,7 +285,7 @@ function createBookModal(book) {
     leftColumn.className = 'md:col-span-1';
     
     const imgContainer = document.createElement('div');
-    imgContainer.className = 'rounded-lg overflow-hidden shadow-lg bg-gray-100';
+    imgContainer.className = 'rounded-lg overflow-hidden shadow-lg bg-surface';
 
     if (book.cover_i) {
         const img = document.createElement('img');
@@ -249,8 +294,8 @@ function createBookModal(book) {
         img.className = 'w-full h-auto object-cover';
         imgContainer.appendChild(img);
     } else {
-        imgContainer.className = 'rounded-lg overflow-hidden shadow-lg bg-gray-100 flex items-center justify-center p-12';
-        imgContainer.innerHTML = '<svg class="w-24 h-24 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>';
+        imgContainer.className = 'rounded-lg overflow-hidden shadow-lg bg-surface flex items-center justify-center p-12';
+        imgContainer.innerHTML = '<svg class="w-24 h-24 text-text-muted" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>';
     }
     leftColumn.appendChild(imgContainer);
     
@@ -320,11 +365,11 @@ function createBookModal(book) {
     const openLibraryButton = document.createElement('a');
     openLibraryButton.href = `https://openlibrary.org${book.key}`;
     openLibraryButton.target = '_blank';
-    openLibraryButton.className = 'bg-primary hover:bg-hover text-white py-2 px-4 rounded transition-colors';
+    openLibraryButton.className = 'bg-primary hover:bg-primary-hover text-white py-2 px-4 rounded transition-colors';
     openLibraryButton.textContent = 'View on Open Library';
     
     const addToListButton = document.createElement('button');
-    addToListButton.className = 'bg-secondary hover:bg-secondary/80 text-primary py-2 px-4 rounded transition-colors';
+    addToListButton.className = 'bg-surface hover:bg-surface/80 text-primary py-2 px-4 rounded transition-colors';
     addToListButton.textContent = 'Add to Reading List';
     
     actions.appendChild(openLibraryButton);
@@ -367,32 +412,13 @@ function showBookDetails(book) {
 searchInput.addEventListener('input', debounce(function() {
     const query = this.value.trim();
     if (query.length < 2) {
+        moveSearchToHero();
         resultsContainer.innerHTML = '<p class="text-center text-text/70">Start typing to search for books...</p>';
         paginationContainer.innerHTML = '';
         return;
     }
     searchBooks(query);
 }, 300));
-
-// Aggiungi animazione per il modal
-document.head.insertAdjacentHTML('beforeend', `
-<style>
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-.animate-fadeIn {
-    animation: fadeIn 0.3s ease-out forwards;
-}
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-.animate-spin {
-    animation: spin 1s linear infinite;
-}
-</style>
-`);
 
 // Inizializza la pagina
 document.addEventListener('DOMContentLoaded', function() {

@@ -6,8 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/x-icon" href="img/bookicon.ico">
 
+    <!-- Google Fonts: Merriweather + Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4A2C2A',
+                        'primary-hover': '#5D3A37',
+                        secondary: '#E8DDD5',
+                        accent: '#C9732C',
+                        'accent-hover': '#A85D1F',
+                        background: '#FEFCF8',
+                        surface: '#F5EFE9',
+                        text: '#1A0E0A',
+                        'text-muted': '#8D6E63',
+                        border: '#D7CCC8',
+                    },
+                    fontFamily: {
+                        heading: ['Merriweather', 'serif'],
+                        body: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
 
     <!-- CSS personalizzato -->
     <link rel="stylesheet" href="./style/style.css">
@@ -15,23 +44,30 @@
     <script src="./js/search.js" defer></script>
     <title>Bookers - All Info About Books</title>
 </head>
-<body class="bg-background text-text min-h-screen flex flex-col">
+<body class="bg-background text-text min-h-screen flex flex-col font-body">
     <!-- Header -->
     <header>
-        <nav class="navbar bg-primary shadow-md">
-            <div class="container mx-auto flex items-center justify-between py-4 px-6">
-                <a class="flex items-center gap-2 text-background" href="#">
-                    <img src="./img/bookicon.svg" alt="Bookers Logo" width="30">
-                    <h1 class="text-lg font-bold">Bookers</h1>
-                </a>
-                <button class="navbar-toggler text-background md:hidden" type="button">
-                    <span class="material-icons">menu</span>
-                </button>
-                <div class="hidden md:flex space-x-6">
-                    <a class="nav-link text-background hover:text-accent transition-colors" href="#">Home</a>
-                    <a class="nav-link text-background hover:text-accent transition-colors" href="#">Categories</a>
-                    <a class="nav-link text-background hover:text-accent transition-colors" href="#">New Releases</a>
-                    <a class="nav-link text-background hover:text-accent transition-colors" href="#">Popular</a>
+        <nav class="bg-primary shadow-md">
+            <div class="container mx-auto px-4 py-3">
+                <div class="flex items-center justify-between gap-4">
+                    <a class="flex items-center gap-2 text-background flex-shrink-0" href="/">
+                        <img src="./img/bookicon.svg" alt="Bookers Logo" width="28">
+                        <span class="font-heading font-bold text-background">Bookers</span>
+                    </a>
+                    <div id="navbarSearchSlot" class="hidden w-full max-w-xs mx-auto"></div>
+                    <div class="flex items-center gap-4 flex-shrink-0">
+                        <div class="hidden md:flex items-center space-x-6">
+                            <a class="text-background/80 hover:text-accent transition-colors text-sm" href="#">Home</a>
+                            <a class="text-background/80 hover:text-accent transition-colors text-sm" href="#">Categories</a>
+                            <a class="text-background/80 hover:text-accent transition-colors text-sm" href="#">New Releases</a>
+                            <a class="text-background/80 hover:text-accent transition-colors text-sm" href="#">Popular</a>
+                        </div>
+                        <button class="text-background md:hidden" type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -40,23 +76,24 @@
     <!-- Main -->
     <main class="flex-grow">
         <div class="container mx-auto px-4 py-8">
-            <div class="text-center mb-8">
-                <h1 class="text-4xl font-bold text-primary mb-4">Bookers</h1>
-                <p class="text-lg text-text mb-8">Where all book lovers search info</p>
+            <div id="heroSection">
+                <div class="text-center mb-8">
+                    <h1 class="text-4xl font-bold text-primary mb-4 font-heading">Bookers</h1>
+                    <p class="text-lg text-text mb-8">Where all book lovers search info</p>
 
-                <!-- Barra di ricerca -->
-                <div class="max-w-3xl mx-auto">
-                    <div class="relative">
-                        <input 
-                            type="text" 
-                            id="searchInput"
-                            placeholder="Search by category, author or title" 
-                            class="w-full py-4 px-12 rounded-full border-2 border-secondary focus:border-primary focus:ring-2 focus:ring-accent/30 shadow-lg text-text placeholder-text/50 transition-all duration-300 focus:outline-none"
-                        >
-                        <div class="absolute left-4 top-1/2 transform -translate-y-1/2 text-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
+                    <div id="heroSearchSlot" class="max-w-3xl mx-auto">
+                        <div id="searchWrapper" class="relative">
+                            <input 
+                                type="text" 
+                                id="searchInput"
+                                placeholder="Search by category, author or title" 
+                                class="w-full py-4 px-12 rounded-full border-2 border-border focus:border-primary focus:ring-2 focus:ring-accent/30 shadow-lg text-text placeholder-text-muted/70 transition-all duration-300 focus:outline-none"
+                            >
+                            <div class="search-icon absolute left-4 top-1/2 -translate-y-1/2 text-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -77,11 +114,11 @@
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div>
-                    <h3 class="text-xl font-bold mb-4">Bookers</h3>
+                    <h3 class="text-xl font-bold mb-4 font-heading">Bookers</h3>
                     <p>Your source for information on all books. Easily find details about authors, titles, and categories.</p>
                 </div>
                 <div>
-                    <h3 class="text-xl font-bold mb-4">Useful Links</h3>
+                    <h3 class="text-xl font-bold mb-4 font-heading">Useful Links</h3>
                     <ul class="space-y-2">
                         <li><a href="#" class="hover:text-accent transition-colors">Home</a></li>
                         <li><a href="#" class="hover:text-accent transition-colors">Categories</a></li>
@@ -90,9 +127,9 @@
                     </ul>
                 </div>
                 <div>
-                    <h3 class="text-xl font-bold mb-4">Contact</h3>
+                    <h3 class="text-xl font-bold mb-4 font-heading">Contact</h3>
                     <p>For any information or support, don't hesitate to contact us.</p>
-                    <button class="mt-4 bg-accent hover:bg-hover text-background py-2 px-4 rounded transition-colors">
+                    <button class="mt-4 bg-accent hover:bg-accent-hover text-background py-2 px-4 rounded transition-colors">
                         Contact Us
                     </button>
                 </div>

@@ -15,7 +15,6 @@ const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 const mobileSidebar = document.getElementById('mobileSidebar');
 const sidebarOverlay = document.getElementById('sidebarOverlay');
 const closeSidebarBtn = document.getElementById('closeSidebarBtn');
-const sidebarSearchSlot = document.getElementById('sidebarSearchSlot');
 const sidebarLinks = document.querySelectorAll('.sidebar-link');
 
 function isMobile() {
@@ -63,14 +62,19 @@ function debounce(fn, delay) {
     };
 }
 
-// Sposta la barra di ricerca nella navbar (desktop) o sidebar (mobile)
+// Sposta la barra di ricerca nella navbar (solo desktop)
 function moveSearchToNavbar() {
-    if (isMobile() && sidebarSearchSlot && searchWrapper && searchWrapper.parentElement !== sidebarSearchSlot) {
-        sidebarSearchSlot.appendChild(searchWrapper);
-        searchWrapper.classList.add('search-in-navbar');
-        heroSection?.classList.add('hero-hidden');
-        openSidebar();
-    } else if (!isMobile() && navbarSearchSlot && searchWrapper && searchWrapper.parentElement !== navbarSearchSlot) {
+    if (isMobile()) {
+        // Su mobile la search resta nell'hero
+        if (searchWrapper && searchWrapper.parentElement !== heroSearchSlot) {
+            heroSearchSlot?.appendChild(searchWrapper);
+            searchWrapper.classList.remove('search-in-navbar');
+            navbarSearchSlot?.classList.add('hidden');
+            heroSection?.classList.remove('hero-hidden');
+        }
+        return;
+    }
+    if (navbarSearchSlot && searchWrapper && searchWrapper.parentElement !== navbarSearchSlot) {
         navbarSearchSlot.classList.remove('hidden');
         navbarSearchSlot.appendChild(searchWrapper);
         searchWrapper.classList.add('search-in-navbar');

@@ -296,7 +296,7 @@ function createBookCard(book, index = 0) {
 
     // Contenuto (dx su desktop, bottom su mobile)
     const content = document.createElement('div');
-    content.className = 'p-4 flex flex-col justify-between flex-grow min-w-0';
+    content.className = 'p-4 flex flex-col justify-center flex-grow min-w-0';
 
     // Titolo
     const title = document.createElement('h3');
@@ -322,7 +322,7 @@ function createBookCard(book, index = 0) {
 
     // Pulsante dettagli
     const detailsButton = document.createElement('button');
-    detailsButton.className = 'self-start bg-primary hover:bg-primary-hover text-background py-2 px-4 rounded transition-colors';
+    detailsButton.className = 'bg-primary hover:bg-primary-hover text-background py-2 px-4 rounded transition-colors self-center';
     detailsButton.textContent = 'View Details';
     detailsButton.onclick = () => showBookDetails(book);
     content.appendChild(detailsButton);

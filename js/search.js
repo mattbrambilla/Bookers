@@ -10,6 +10,35 @@ const heroSearchSlot = document.getElementById('heroSearchSlot');
 const heroSection = document.getElementById('heroSection');
 const searchWrapper = document.getElementById('searchWrapper');
 
+// Sidebar elementi mobile
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const mobileSidebar = document.getElementById('mobileSidebar');
+const sidebarOverlay = document.getElementById('sidebarOverlay');
+const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+const sidebarSearchSlot = document.getElementById('sidebarSearchSlot');
+const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
+function isMobile() {
+    return window.innerWidth < 768;
+}
+
+function openSidebar() {
+    mobileSidebar.classList.add('open');
+    sidebarOverlay.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeSidebar() {
+    mobileSidebar.classList.remove('open');
+    sidebarOverlay.classList.add('hidden');
+    document.body.style.overflow = '';
+}
+
+mobileMenuBtn?.addEventListener('click', openSidebar);
+closeSidebarBtn?.addEventListener('click', closeSidebar);
+sidebarOverlay?.addEventListener('click', closeSidebar);
+sidebarLinks.forEach(link => link.addEventListener('click', closeSidebar));
+
 // Variabili globali per la paginazione
 let currentPage = 1;
 let resultsPerPage = 10;
@@ -25,9 +54,14 @@ function debounce(fn, delay) {
     };
 }
 
-// Sposta la barra di ricerca nella navbar
+// Sposta la barra di ricerca nella navbar (desktop) o sidebar (mobile)
 function moveSearchToNavbar() {
-    if (navbarSearchSlot && searchWrapper && searchWrapper.parentElement !== navbarSearchSlot) {
+    if (isMobile() && sidebarSearchSlot && searchWrapper && searchWrapper.parentElement !== sidebarSearchSlot) {
+        sidebarSearchSlot.appendChild(searchWrapper);
+        searchWrapper.classList.add('search-in-navbar');
+        heroSection?.classList.add('hero-hidden');
+        openSidebar();
+    } else if (!isMobile() && navbarSearchSlot && searchWrapper && searchWrapper.parentElement !== navbarSearchSlot) {
         navbarSearchSlot.classList.remove('hidden');
         navbarSearchSlot.appendChild(searchWrapper);
         searchWrapper.classList.add('search-in-navbar');
@@ -419,6 +453,18 @@ searchInput.addEventListener('input', debounce(function() {
     }
     searchBooks(query);
 }, 300));
+
+// Gestisce ridimensionamento finestra
+window.addEventListener('resize', function() {
+    if (!isMobile()) {
+        closeSidebar();
+    }
+    // Rialloca la search bar se la ricerca è attiva
+    const query = searchInput.value.trim();
+    if (query.length >= 2 && lastQuery) {
+        moveSearchToNavbar();
+    }
+});
 
 // Inizializza la pagina
 document.addEventListener('DOMContentLoaded', function() {

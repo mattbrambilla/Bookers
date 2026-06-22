@@ -175,3 +175,19 @@ h1, h2, h3, h4, h5, h6 {
 #heroSection.hero-hidden {
   display: none;
 }
+
+/* Mobile sidebar */
+#mobileSidebar {
+  box-shadow: -4px 0 15px rgba(0, 0, 0, 0.3);
+}
+#mobileSidebar.open {
+  transform: translateX(0);
+}
+#sidebarOverlay {
+  transition: opacity 0.3s ease;
+}
+
+/* Scroll dentro la sidebar */
+#mobileSidebar {
+  overflow-y: auto;
+}

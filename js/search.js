@@ -276,12 +276,12 @@ function searchBooks(query) {
 // Funzione per creare una card libro con layout orizzontale
 function createBookCard(book, index = 0) {
     const card = document.createElement('div');
-    card.className = 'bg-surface rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-border flex flex-col md:flex-row animate-fadeInUp';
+    card.className = 'bg-surface rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-border flex flex-row animate-fadeInUp';
     card.style.animationDelay = `${index * 0.08}s`;
 
     // Immagine copertina (sx su desktop, top su mobile)
     const imgContainer = document.createElement('div');
-    imgContainer.className = 'w-full md:w-36 h-48 md:h-auto flex-shrink-0 flex items-center justify-center bg-surface';
+    imgContainer.className = 'w-24 sm:w-32 md:w-36 flex-shrink-0 flex items-center justify-center bg-surface';
 
     if (book.cover_i) {
         const img = document.createElement('img');

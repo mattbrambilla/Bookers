@@ -273,15 +273,15 @@ function searchBooks(query) {
         });
 }
 
-// Funzione per creare una card libro con Tailwind CSS
+// Funzione per creare una card libro con layout orizzontale
 function createBookCard(book, index = 0) {
     const card = document.createElement('div');
-    card.className = 'bg-surface rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-border flex flex-col animate-fadeInUp';
+    card.className = 'bg-surface rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-border flex flex-col md:flex-row animate-fadeInUp';
     card.style.animationDelay = `${index * 0.08}s`;
 
-    // Immagine copertina
+    // Immagine copertina (sx su desktop, top su mobile)
     const imgContainer = document.createElement('div');
-    imgContainer.className = 'w-full h-48 flex items-center justify-center bg-surface';
+    imgContainer.className = 'w-full md:w-36 h-48 md:h-auto flex-shrink-0 flex items-center justify-center bg-surface';
 
     if (book.cover_i) {
         const img = document.createElement('img');
@@ -294,25 +294,35 @@ function createBookCard(book, index = 0) {
     }
     card.appendChild(imgContainer);
 
-    // Contenuto della card
+    // Contenuto (dx su desktop, bottom su mobile)
     const content = document.createElement('div');
-    content.className = 'p-4 flex-grow flex flex-col';
+    content.className = 'p-4 flex flex-col justify-between flex-grow min-w-0';
 
     // Titolo
     const title = document.createElement('h3');
-    title.className = 'font-bold text-primary mb-2';
+    title.className = 'font-bold text-primary text-base leading-tight';
     title.textContent = book.title || 'Unknown Title';
     content.appendChild(title);
 
     // Autore
     const author = document.createElement('p');
-    author.className = 'text-text text-sm mb-4';
-    author.textContent = book.author_name ? book.author_name.join(', ') : 'Unknown Author';
+    author.className = 'text-text text-sm mt-1';
+    author.textContent = book.author_name ? `di ${book.author_name.join(', ')}` : 'Unknown Author';
     content.appendChild(author);
+
+    // Anno
+    const year = document.createElement('p');
+    year.className = 'text-text-muted text-sm mt-1 mb-4';
+    if (book.first_publish_year) {
+        year.textContent = `📅 ${book.first_publish_year}`;
+    } else {
+        year.textContent = '';
+    }
+    content.appendChild(year);
 
     // Pulsante dettagli
     const detailsButton = document.createElement('button');
-    detailsButton.className = 'mt-auto bg-primary hover:bg-primary-hover text-background py-2 px-4 rounded transition-colors';
+    detailsButton.className = 'self-start bg-primary hover:bg-primary-hover text-background py-2 px-4 rounded transition-colors';
     detailsButton.textContent = 'View Details';
     detailsButton.onclick = () => showBookDetails(book);
     content.appendChild(detailsButton);
@@ -393,7 +403,7 @@ function displayResults(books, page) {
 
     // Crea un contenitore a griglia per i risultati
     const grid = document.createElement('div');
-    grid.className = 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6';
+    grid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6';
     
     // Calcola l'indice di inizio e fine per la pagina corrente
     const startIndex = (page - 1) * resultsPerPage;

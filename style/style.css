@@ -191,3 +191,32 @@ h1, h2, h3, h4, h5, h6 {
 #mobileSidebar {
   overflow-y: auto;
 }
+
+/* Category cards */
+.category-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.75rem 1rem;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 120px;
+}
+.category-card:hover {
+  transform: scale(1.06) translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+.category-card .category-emoji {
+  font-size: 2.5rem;
+  line-height: 1;
+  margin-bottom: 0.75rem;
+}
+.category-card .category-name {
+  font-family: 'Merriweather', serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+  color: white;
+}

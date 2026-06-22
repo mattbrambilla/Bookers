@@ -57,8 +57,8 @@
                     <div id="navbarSearchSlot" class="hidden w-full max-w-xs mx-auto"></div>
                     <div class="flex items-center gap-4 flex-shrink-0">
                         <div class="hidden md:flex items-center space-x-6">
-                            <a class="text-background/80 hover:text-accent transition-colors text-sm" href="#">Home</a>
-                            <a class="text-background/80 hover:text-accent transition-colors text-sm" href="#">Categories</a>
+                            <a class="nav-link text-background/80 hover:text-accent transition-colors text-sm" href="#" data-view="home">Home</a>
+                            <a class="nav-link text-background/80 hover:text-accent transition-colors text-sm" href="#" data-view="categories">Categories</a>
                             <a class="text-background/80 hover:text-accent transition-colors text-sm" href="#">New Releases</a>
                             <a class="text-background/80 hover:text-accent transition-colors text-sm" href="#">Popular</a>
                         </div>
@@ -86,8 +86,8 @@
             </button>
         </div>
         <nav class="flex flex-col p-4 space-y-4">
-            <a class="sidebar-link text-background/80 hover:text-accent transition-colors text-sm" href="#">Home</a>
-            <a class="sidebar-link text-background/80 hover:text-accent transition-colors text-sm" href="#">Categories</a>
+            <a class="sidebar-link nav-link text-background/80 hover:text-accent transition-colors text-sm" href="#" data-view="home">Home</a>
+            <a class="sidebar-link nav-link text-background/80 hover:text-accent transition-colors text-sm" href="#" data-view="categories">Categories</a>
             <a class="sidebar-link text-background/80 hover:text-accent transition-colors text-sm" href="#">New Releases</a>
             <a class="sidebar-link text-background/80 hover:text-accent transition-colors text-sm" href="#">Popular</a>
         </nav>
@@ -99,8 +99,8 @@
         <div class="container mx-auto px-4 py-8">
             <div id="heroSection">
                 <div class="text-center mb-8">
-                    <h1 class="text-4xl font-bold text-primary mb-4 font-heading">Bookers</h1>
-                    <p class="text-lg text-text mb-8">Where all book lovers search info</p>
+                    <h1 id="heroTitle" class="text-4xl font-bold text-primary mb-4 font-heading">Bookers</h1>
+                    <p id="heroSubtitle" class="text-lg text-text mb-8">Where all book lovers search info</p>
 
                     <div id="heroSearchSlot" class="max-w-3xl mx-auto">
                         <div id="searchWrapper" class="relative">
@@ -127,6 +127,12 @@
 
             <!-- Contenitore paginazione -->
             <div id="pagination" class="mt-8 flex justify-center"></div>
+
+            <!-- Contenitore categorie -->
+            <div id="categoriesSection" class="hidden mt-8">
+                <h2 class="text-3xl font-bold text-primary mb-8 text-center font-heading">Browse Categories</h2>
+                <div id="categoriesGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
+            </div>
         </div>
     </main>
 
@@ -141,8 +147,8 @@
                 <div>
                     <h3 class="text-xl font-bold mb-4 font-heading">Useful Links</h3>
                     <ul class="space-y-2">
-                        <li><a href="#" class="hover:text-accent transition-colors">Home</a></li>
-                        <li><a href="#" class="hover:text-accent transition-colors">Categories</a></li>
+                        <li><a href="#" class="nav-link hover:text-accent transition-colors" data-view="home">Home</a></li>
+                        <li><a href="#" class="nav-link hover:text-accent transition-colors" data-view="categories">Categories</a></li>
                         <li><a href="#" class="hover:text-accent transition-colors">New Releases</a></li>
                         <li><a href="#" class="hover:text-accent transition-colors">Popular</a></li>
                     </ul>

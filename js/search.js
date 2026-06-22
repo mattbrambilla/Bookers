@@ -46,6 +46,15 @@ let allResults = [];
 let currentController = null;
 let lastQuery = '';
 
+// Categorie
+const categoriesSection = document.getElementById('categoriesSection');
+const categoriesGrid = document.getElementById('categoriesGrid');
+const heroTitle = document.getElementById('heroTitle');
+const heroSubtitle = document.getElementById('heroSubtitle');
+let currentView = 'home';
+let currentCategory = null;
+let currentCategoryBooks = [];
+
 function debounce(fn, delay) {
     let timer;
     return function (...args) {
@@ -77,6 +86,127 @@ function moveSearchToHero() {
         navbarSearchSlot?.classList.add('hidden');
         heroSection?.classList.remove('hero-hidden');
     }
+}
+
+// === Categorie ===
+const categories = [
+    { name: 'Fiction',          emoji: '📚', color: 'from-blue-600 to-blue-400' },
+    { name: 'Fantasy',          emoji: '🐉', color: 'from-purple-600 to-purple-400' },
+    { name: 'Science Fiction',  emoji: '🚀', color: 'from-indigo-600 to-indigo-400' },
+    { name: 'Mystery',          emoji: '🔍', color: 'from-gray-700 to-gray-500' },
+    { name: 'Romance',          emoji: '💕', color: 'from-pink-500 to-pink-300' },
+    { name: 'Horror',           emoji: '👻', color: 'from-red-800 to-red-600' },
+    { name: 'History',          emoji: '📜', color: 'from-amber-700 to-amber-500' },
+    { name: 'Biography',        emoji: '👤', color: 'from-teal-600 to-teal-400' },
+    { name: 'Science',          emoji: '🔬', color: 'from-cyan-600 to-cyan-400' },
+    { name: 'Philosophy',       emoji: '💭', color: 'from-stone-600 to-stone-400' },
+    { name: 'Poetry',           emoji: '🖋️', color: 'from-rose-500 to-rose-300' },
+    { name: 'Art',              emoji: '🎨', color: 'from-orange-500 to-orange-300' },
+    { name: 'Music',            emoji: '🎵', color: 'from-violet-500 to-violet-300' },
+    { name: 'Travel',           emoji: '🌍', color: 'from-emerald-600 to-emerald-400' },
+    { name: 'Cooking',          emoji: '🍳', color: 'from-red-500 to-red-300' },
+    { name: 'Business',         emoji: '💼', color: 'from-sky-700 to-sky-500' },
+    { name: 'Self-Help',        emoji: '🌱', color: 'from-green-600 to-green-400' },
+    { name: 'Comics',           emoji: '💬', color: 'from-yellow-600 to-yellow-400' },
+    { name: 'Children',         emoji: '🧒', color: 'from-blue-400 to-blue-200' },
+    { name: 'Technology',       emoji: '💻', color: 'from-slate-600 to-slate-400' },
+];
+
+function normalizeBook(book) {
+    return {
+        title: book.title,
+        author_name: book.author_name || (book.authors ? book.authors.map(a => a.name) : undefined),
+        first_publish_year: book.first_publish_year,
+        cover_i: book.cover_i || book.cover_id,
+        key: book.key,
+        publisher: book.publisher,
+        language: book.language,
+        subject: book.subject,
+    };
+}
+
+function showHomeView() {
+    currentView = 'home';
+    heroTitle.textContent = 'Bookers';
+    heroSubtitle.textContent = 'Where all book lovers search info';
+    categoriesSection?.classList.add('hidden');
+    resultsContainer.innerHTML = '<p class="text-center text-text/70">Start typing to search for books...</p>';
+    paginationContainer.innerHTML = '';
+    moveSearchToHero();
+    if (isMobile()) closeSidebar();
+}
+
+function renderCategoryGrid() {
+    categoriesGrid.innerHTML = '';
+    categories.forEach(cat => {
+        const card = document.createElement('div');
+        card.className = 'category-card bg-gradient-to-br ' + cat.color + ' text-white rounded-xl shadow-lg';
+        card.innerHTML = `
+            <span class="category-emoji">${cat.emoji}</span>
+            <span class="category-name">${cat.name}</span>
+        `;
+        card.addEventListener('click', () => fetchCategoryBooks(cat.name));
+        categoriesGrid.appendChild(card);
+    });
+}
+
+function showCategoriesView() {
+    currentView = 'categories';
+    heroTitle.textContent = 'Browse Categories';
+    heroSubtitle.textContent = 'Select a category to explore books';
+    categoriesSection?.classList.remove('hidden');
+    resultsContainer.innerHTML = '';
+    paginationContainer.innerHTML = '';
+    moveSearchToHero();
+    if (isMobile()) closeSidebar();
+    renderCategoryGrid();
+}
+
+function showAllCategories() {
+    showCategoriesView();
+}
+
+function fetchCategoryBooks(categoryDisplayName) {
+    if (currentController) {
+        currentController.abort();
+    }
+    currentController = new AbortController();
+    const signal = currentController.signal;
+
+    const subject = categoryDisplayName.toLowerCase().replace(/\s+/g, '_');
+
+    currentView = 'category-books';
+    currentCategory = categoryDisplayName;
+    currentCategoryBooks = [];
+    categoriesSection?.classList.add('hidden');
+
+    heroTitle.textContent = categoryDisplayName;
+    heroSubtitle.innerHTML = '<button onclick="showAllCategories()" class="text-accent hover:text-accent-hover transition-colors">← Back to Categories</button>';
+
+    resultsContainer.innerHTML = createSkeletonCards(6);
+    paginationContainer.innerHTML = '';
+
+    const apiUrl = `https://openlibrary.org/subjects/${encodeURIComponent(subject)}.json?limit=20`;
+
+    fetch(apiUrl, { signal })
+        .then(response => response.json())
+        .then(data => {
+            if (data.works && data.works.length > 0) {
+                currentCategoryBooks = data.works.map(normalizeBook);
+                lastQuery = '';
+                allResults = currentCategoryBooks;
+                displayResults(allResults, 1);
+            } else {
+                resultsContainer.innerHTML = '<p class="text-center text-text/70">No books found in this category.</p>';
+                paginationContainer.innerHTML = '';
+            }
+        })
+        .catch(error => {
+            if (error.name === 'AbortError') return;
+            console.error('Error fetching category:', error);
+            resultsContainer.innerHTML = '<p class="text-center text-text/70">An error occurred while loading this category. Please try again later.</p>';
+            paginationContainer.innerHTML = '';
+        });
 }
 
 // Genera scheletri per il caricamento
@@ -447,12 +577,32 @@ searchInput.addEventListener('input', debounce(function() {
     const query = this.value.trim();
     if (query.length < 2) {
         moveSearchToHero();
-        resultsContainer.innerHTML = '<p class="text-center text-text/70">Start typing to search for books...</p>';
         paginationContainer.innerHTML = '';
+        if (currentView === 'categories') {
+            categoriesSection?.classList.remove('hidden');
+            resultsContainer.innerHTML = '';
+        } else if (currentView === 'category-books' && currentCategoryBooks.length > 0) {
+            resultsContainer.innerHTML = '';
+            allResults = currentCategoryBooks;
+            displayResults(allResults, 1);
+        } else {
+            resultsContainer.innerHTML = '<p class="text-center text-text/70">Start typing to search for books...</p>';
+        }
         return;
     }
+    categoriesSection?.classList.add('hidden');
     searchBooks(query);
 }, 300));
+
+// Event listener per navigazione
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const view = this.dataset.view;
+        if (view === 'home') showHomeView();
+        else if (view === 'categories') showCategoriesView();
+    });
+});
 
 // Gestisce ridimensionamento finestra
 window.addEventListener('resize', function() {
